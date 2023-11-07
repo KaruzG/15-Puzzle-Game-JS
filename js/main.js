@@ -1,3 +1,8 @@
+/* 
+    El concepto se basa en coordenadas de -2 a 1, siendo estos dos números los límites.
+
+*/
+
 var body = document.querySelector("body");
 
 
@@ -11,12 +16,14 @@ function crearTabla4x4(fichas) {
     let celdaVaciaY = (Math.floor(Math.random() * 4 - 2));
     console.log("· Hueco: x:" + celdaVaciaX + "  y:"+celdaVaciaY);
 
+
     // Aleatorizar array (Algoritmo Durstenfeld shuffle)
     for (let i = fichas.length - 1; i > 0; i--) {
         const i2 = Math.floor(Math.random() * (i + 1));
         [fichas[i], fichas[i2]] = [fichas[i2], fichas[i]];
     }
     console.log("· Fichas mezcladas");
+
 
     // Genera una tabla con sus tr y td y se inicializa un objeto ficha cada td menos
     // en el lugar aleatorio anteriormente calculado.
@@ -27,12 +34,8 @@ function crearTabla4x4(fichas) {
         tabla += "<tr>"
         for( let filasCreadas = 1; filasCreadas <= 4; filasCreadas++) {
             // Contenido de la celda:
-            console.log("FilasCreadas:" + filasCreadas + " " + (celdaVaciaX+3));
-            console.log("FilasCreadas:" + columnasCreadas + " " + (celdaVaciaY+3));
-            console.log(fichasCreadas);
-
+            //      Si NO toca la celda que tiene que está vacía añade una ficha y suma 1 a fichasCreadas.
             if(columnasCreadas == (celdaVaciaY+3) && filasCreadas == (celdaVaciaX + 3)) {
-                console.log("NO MUESTRO");
                 tabla += "<td></td>"
             } else {
                 tabla += "<td>" + fichas[fichasCreadas].displayFicha() + "</td>";
@@ -43,13 +46,14 @@ function crearTabla4x4(fichas) {
     }
     tabla += "</table>";
 
-    // insertar tabla
+
+    // Insertar tabla en HTML
     body.innerHTML += tabla;
 }
 
 
 function generarFichas() {
-    // Las fichas serán almacenadas en un array
+    // Las fichas serán almacenadas en un array "fichas"
     let fichas = [];
     for (let i = 0; i < 15; i++) {
         fichas.push(new ficha(i));
