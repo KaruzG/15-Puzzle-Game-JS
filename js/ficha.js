@@ -15,7 +15,9 @@ class ficha {
 
     // Methods
     displayFicha() {
-        console.log("Display!");
-        return "<img id=\"ficha"+ (this.valor + 1) +"\" src=\""+ this.img +"\"</img>";
+        let ficha = document.createElement("img");
+        ficha.id = "ficha" + this.valor + 1;
+        ficha.src = this.img;
+        return ficha;
     }
 }
