@@ -37,6 +37,19 @@ function crearTabla4x4(fichas) {
         for (let filasCreadas = 1; filasCreadas <= 4; filasCreadas++) {
             let item = document.createElement("td"); // TD
 
+            let coordX = (filasCreadas - 3);
+            let coordY = (columnasCreadas - 3);
+
+            /* 
+            
+            Te quedas viendo como implementar las coordenadas en los el img
+            para luego poder calcular el hueco y sus fichas cercanas
+
+            */
+
+
+
+
             if(columnasCreadas == (celdaVaciaY+3) && filasCreadas == (celdaVaciaX + 3)) { // Celda vacía
                 let hueco = document.createElement("img");
                 hueco.src = "img/blanco.gif";
@@ -69,12 +82,13 @@ function generarFichas() {
 
 function prepararHueco() {
     let hueco = document.getElementById("hueco");
-
 }
 
 function prepararFichasMovibles() {
     let fichasMovibles = document.querySelectorAll("img");
     let hueco = document.getElementById("hueco");
+
+    // Fetch cordenadas hueco
 }
 
 crearTabla4x4(generarFichas());

@@ -1,6 +1,7 @@
 * {
     margin: 0;
-    padding: 0;   
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -23,6 +24,14 @@ table {
 td {
     height: 10px;
     width: 100px;
+}
+
+td#hueco {
+    border: 1px dotted black;
+}
+
+img.over {
+    border: 3px dotted #667;
 }
 
 img {
