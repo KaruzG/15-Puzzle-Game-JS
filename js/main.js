@@ -27,28 +27,32 @@ function crearTabla4x4(fichas) {
 
     // Genera una tabla con sus tr y td y se inicializa un objeto ficha cada td menos
     // en el lugar aleatorio anteriormente calculado.
-    let tabla = "<table>";
-
+    let tabla4x4 = document.createElement("table"); // Tabla
+    
     let fichasCreadas = 0;
-    for(let columnasCreadas = 1; columnasCreadas <= 4; columnasCreadas++) {
-        tabla += "<tr>"
-        for( let filasCreadas = 1; filasCreadas <= 4; filasCreadas++) {
-            // Contenido de la celda:
-            //      Si NO toca la celda que tiene que está vacía añade una ficha y suma 1 a fichasCreadas.
-            if(columnasCreadas == (celdaVaciaY+3) && filasCreadas == (celdaVaciaX + 3)) {
-                tabla += "<td></td>"
+
+    for (let columnasCreadas = 1; columnasCreadas <= 4; columnasCreadas++) { // Aquí se va recorriendo cada fila y añadiendo los elementos
+        let row = document.createElement("tr"); // TR
+
+        for (let filasCreadas = 1; filasCreadas <= 4; filasCreadas++) {
+            let item = document.createElement("td"); // TD
+
+            if(columnasCreadas == (celdaVaciaY+3) && filasCreadas == (celdaVaciaX + 3)) { // Celda vacía
+                let hueco = document.createElement("img");
+                hueco.src = "img/blanco.gif";
+                hueco.id = "hueco";
+                item.appendChild(hueco);
             } else {
-                tabla += "<td>" + fichas[fichasCreadas].displayFicha() + "</td>";
+                item.appendChild(fichas[fichasCreadas].displayFicha()); // FICHA
                 fichasCreadas++;
-            }
+            }            
+            row.appendChild(item);
         }
-        tabla += "</tr>"
+        tabla4x4.appendChild(row);
     }
-    tabla += "</table>";
 
-
-    // Insertar tabla en HTML
-    body.innerHTML += tabla;
+    // Insertar tabla
+    body.appendChild(tabla4x4);
 }
 
 
@@ -61,6 +65,16 @@ function generarFichas() {
     console.log("· Fichas generadas");
 
     return fichas;
+}
+
+function prepararHueco() {
+    let hueco = document.getElementById("hueco");
+
+}
+
+function prepararFichasMovibles() {
+    let fichasMovibles = document.querySelectorAll("img");
+    let hueco = document.getElementById("hueco");
 }
 
 crearTabla4x4(generarFichas());
