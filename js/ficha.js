@@ -16,12 +16,11 @@ class ficha {
     // Methods
     displayFicha(x, y) {
         let ficha = document.createElement("img");
-        ficha.id = "ficha" + (this.valor + 1);
+        ficha.id = "ficha" + (this.valor);
         ficha.classList += "ficha";
         ficha.src = this.img;
         this.posX = x;
         this.posY = y;
-        this.elemento = ficha;
         return ficha;
     }
 }

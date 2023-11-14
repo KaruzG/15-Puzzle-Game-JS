@@ -32,7 +32,7 @@ class game {
                 let item = document.createElement("td"); // TD
     
                 let coordX = (filasCreadas - 3);
-                let coordY = ((columnasCreadas - 3)*(-1));
+                let coordY = ((columnasCreadas-2) * -1);
     
                 if(columnasCreadas == (celdaVaciaY+3) && filasCreadas == (celdaVaciaX + 3)) { // Celda vacía
                     let hueco = document.createElement("img");
@@ -66,6 +66,19 @@ class game {
     
         return fichas;
     }
+
+    /* Busca una ficha por sus coordenadas */
+    buscarFicha(x,y) {
+        fichas.forEach(ficha => {
+            if (ficha.coordX === x & ficha.coordY === y) {
+                return ficha;
+            } else {
+                return false;
+            }
+
+            
+        });
+    }
     
     prepararHueco() {
         this.hueco = document.getElementById("hueco");
@@ -79,20 +92,36 @@ class game {
     }
     
     prepararFichasMovibles() {
-        fichas = body.querySelectorAll("img.ficha");
-        let fichasMovibles = [
-            fichas[1],
-            fichas[2],
-        ]
+        console.log("· Preparando");
+        this.fichas.forEach(ficha => {
+            if      (ficha.posY === this.coordYHueco & (ficha.posX + 1) === this.coordXHueco) {
+                console.log("Izquierda:");
+                console.log(ficha);
+            }
+            else if (ficha.posY === this.coordYHueco & (ficha.posX - 1) === this.coordXHueco) {
+                console.log("Derecha:");
+                console.log(ficha);
+            }
+            else if (ficha.posX === this.coordXHueco & (ficha.posY + 1) === this.coordXHueco) {
+                console.log("Abajo");
+                console.log(ficha);
+            }
+            else if (ficha.posX === this.coordXHueco & (ficha.posY - 1) === this.coordXHueco) {
+                console.log("Arriba");
+                console.log(ficha);
+            }
+        });
 
-        fichasMovibles.forEach(function(ficha) {
+        // No calcula bien el eje Y, o bien arriba o bien aquí
+
+/*         fichasMovibles.forEach(function(ficha) {
             ficha.addEventListener("dragstart", handleDragStart);
             ficha.addEventListener("dragover", handleDragOver);
             ficha.addEventListener("dragend", handleDragEnd);
             ficha.addEventListener("dragenter", handleDragEnter);
             ficha.addEventListener("dragleave", handleDragLeave);
             ficha.addEventListener("drop", handleDrop);
-        });
+        }); */
     
         // Fetch cordenadas hueco
     }
