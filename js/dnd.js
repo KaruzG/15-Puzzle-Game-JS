@@ -1,9 +1,7 @@
 /* CONTROLADOR PARA ARRASTRAR ELEMENTOS */
 // Documentación de https://web.dev/articles/drag-and-drop?hl=es
 
-let fichaDraggable = document.getElementById("draggable");
-let dropZone  = document.getElementById("hueco");
-let imgS = document.querySelectorAll("img");
+let fichas = document.querySelectorAll("img");
 
 function handleDragStart(e) {
     this.style.opacity = "0.4";
@@ -17,7 +15,7 @@ function handleDragStart(e) {
 function handleDragEnd(e) {
     this.style.opacity = "1";
 
-    imgS.forEach(function (item) {
+    fichas.forEach(function (item) {
         item.classList.remove("over")
     })
 }
@@ -52,17 +50,7 @@ function handleDrop(e) {
     return false;
 }
 
-fichaDraggable.addEventListener("dragstart", handleDragStart);
-fichaDraggable.addEventListener("dragover", handleDragOver);
-fichaDraggable.addEventListener("dragend", handleDragEnd);
-fichaDraggable.addEventListener("dragenter", handleDragEnter);
-fichaDraggable.addEventListener("dragleave", handleDragLeave);
-fichaDraggable.addEventListener("drop", handleDrop);
 
-dropZone.addEventListener("dragover", handleDragOver);
-dropZone.addEventListener("dragenter", handleDragEnter);
-dropZone.addEventListener("dragleave", handleDragLeave);
-dropZone.addEventListener("drop", handleDrop);
 
 
 
