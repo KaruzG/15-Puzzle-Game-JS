@@ -1,23 +1,16 @@
 /* CONTROLADOR PARA ARRASTRAR ELEMENTOS */
 // Documentación de https://web.dev/articles/drag-and-drop?hl=es
-
-let fichas = document.querySelectorAll("img");
-
 function handleDragStart(e) {
     this.style.opacity = "0.4";
 
     dragSourceElement = this;
 
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("img/html", dragSourceElement.src);
+    e.dataTransfer.setData("img/html", this.src);
 }
 
 function handleDragEnd(e) {
     this.style.opacity = "1";
-
-    fichas.forEach(function (item) {
-        item.classList.remove("over")
-    })
 }
 
 function handleDragOver(e) {
@@ -37,16 +30,15 @@ function handleDragLeave(e) {
 }
 
 function handleDrop(e) {
+    console.log("Handle Drop: " + this.innerHTML)
     e.stopPropagation();
 
-    if (dragSourceElement !== this) {
+    if (dragSourceElement !== this) { // Intercambia los elementos
         dragSourceElement.src = this.src;
-        console.log(e.dataTransfer.getData("img/html"));
         this.src = e.dataTransfer.getData("img/html");
-        console.log("Dropped");
-
     }
 
+    this.classList.remove('over');
     return false;
 }
 

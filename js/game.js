@@ -1,16 +1,27 @@
 var body = document.querySelector("body");
 
+/** Variables
+     * @param {Number} idTabla id de la tabla
+     * @param {Array} fichas Fichas dentro de la tabla (objetos)
+     * 
+     * @param {Number} celdaVaciaX Posición X del hueco
+     * @param {Number} celdaVaciaY Posición Y del hueco
+     */
+
 class game {
     constructor() {
+        this.idTabla = (Math.floor(Math.random() * 100));
         this.fichas = this.generarFichas();
+    }
+
+    start() {
+        this.crearTabla4x4();
+        this.prepararHueco();
+        this.prepararFichasMovibles();
     }
 
     crearTabla4x4() {
         // Seleccionar aleatoriamente que celda queda vacía:
-        /*
-            Aunque da un valor entre -2 a 1 (tipo coordenada) luego se va a usar
-            de 1 a 4 en la creación de la tabla.
-        */
         let celdaVaciaX = (Math.floor(Math.random() * 4 - 2)) ;
         let celdaVaciaY = (Math.floor(Math.random() * 4 - 2))    
     
@@ -23,6 +34,7 @@ class game {
         // Genera una tabla con sus tr y td y se inicializa un objeto ficha cada td menos
         // en el lugar aleatorio anteriormente calculado.
         let tabla4x4 = document.createElement("table"); // Tabla
+        tabla4x4.id = this.idTabla;
         
         let fichasCreadas = 0;
         for (let columnasCreadas = 1; columnasCreadas <= 4; columnasCreadas++) { // Aquí se va recorriendo cada fila y añadiendo los elementos
@@ -52,22 +64,20 @@ class game {
     
         // Insertar tabla
         body.appendChild(tabla4x4);
-    
-        return true;
     }
 
     generarFichas() {
         // Las fichas serán almacenadas en un array "fichas"
         let fichas = [];
         for (let i = 0; i < 15; i++) {
-            fichas.push(new ficha(i));
+            fichas.push(new ficha(i, this.idTabla));
         }
-        console.log("· Fichas generadas");
     
         return fichas;
     }
 
     /* Busca una ficha por sus coordenadas */
+    // sin uso por ahora
     buscarFicha(x,y) {
         fichas.forEach(ficha => {
             if (ficha.coordX === x & ficha.coordY === y) {
@@ -92,37 +102,30 @@ class game {
     }
     
     prepararFichasMovibles() {
-        console.log("· Preparando");
-        this.fichas.forEach(ficha => {
-            if      (ficha.posY === this.coordYHueco & (ficha.posX + 1) === this.coordXHueco) {
-                console.log("Izquierda:");
-                console.log(ficha);
+        this.fichas.forEach(ficha => { //Si está en contacto con el hueco:
+            if      (ficha.posY == this.coordYHueco & (ficha.posX + 1) == this.coordXHueco) {
+                ficha.element.classList += " draggable";
             }
-            else if (ficha.posY === this.coordYHueco & (ficha.posX - 1) === this.coordXHueco) {
-                console.log("Derecha:");
-                console.log(ficha);
+            else if (ficha.posY == this.coordYHueco & (ficha.posX - 1) == this.coordXHueco) {
+                ficha.element.classList += " draggable";
             }
-            else if (ficha.posX === this.coordXHueco & (ficha.posY + 1) === this.coordXHueco) {
-                console.log("Abajo");
-                console.log(ficha);
+            else if (ficha.posX == this.coordXHueco & (ficha.posY + 1) == this.coordYHueco) {
+                ficha.element.classList += " draggable";
             }
-            else if (ficha.posX === this.coordXHueco & (ficha.posY - 1) === this.coordXHueco) {
-                console.log("Arriba");
-                console.log(ficha);
+            else if (ficha.posX == this.coordXHueco & (ficha.posY - 1) == this.coordYHueco) {
+                ficha.element.classList += " draggable";
             }
         });
 
-        // No calcula bien el eje Y, o bien arriba o bien aquí
+        let fichasMovibles = document.querySelectorAll("img.draggable"); 
 
-/*         fichasMovibles.forEach(function(ficha) {
+        fichasMovibles.forEach(function(ficha) {
             ficha.addEventListener("dragstart", handleDragStart);
             ficha.addEventListener("dragover", handleDragOver);
             ficha.addEventListener("dragend", handleDragEnd);
             ficha.addEventListener("dragenter", handleDragEnter);
             ficha.addEventListener("dragleave", handleDragLeave);
             ficha.addEventListener("drop", handleDrop);
-        }); */
-    
-        // Fetch cordenadas hueco
+        });
     }
 }
