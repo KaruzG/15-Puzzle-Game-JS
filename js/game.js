@@ -74,7 +74,6 @@ class game {
         return tablero
     }
 
-
     /* DISPLAYTABLERO
        · Genera el elemento HTML a mostrar en la página.
     */
@@ -97,7 +96,6 @@ class game {
         body.appendChild(elementoTablero);
     }
 
-
     /* BUSCARFICHA
         Busca una ficha por sus coordenadas (sin uso por ahora)
     */
@@ -112,7 +110,6 @@ class game {
             
         });
     }
-    
 
     prepararHueco() {
         this.hueco = document.getElementById("hueco");
@@ -124,7 +121,6 @@ class game {
 
         console.log("· Hueco preparado!");
     }
-    
 
     /*  PREPARARFICHAMOVIBLES
        · Busca las 4 a 2 fichas en contacto con el hueco y les añade los event
