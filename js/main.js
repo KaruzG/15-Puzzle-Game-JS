@@ -1,5 +1,3 @@
-let game1 = new game;
+const game1 = new game;
 
-game1.crearTabla4x4();
-game1.prepararHueco();
-game1.prepararFichasMovibles();
+game1.start();
