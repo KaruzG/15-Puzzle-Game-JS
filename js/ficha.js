@@ -19,7 +19,6 @@ class ficha {
     // Get
     get posX() {
         let eTabla = document.getElementById("" + this.idTabla);
-        console.log(eTabla)
 
         return this._posX;
     }
