@@ -15,8 +15,9 @@ class game {
     }
 
     start() {
+        this.tablero = this.generarTablero()
 
-        this.displayTablero(this.generarTablero());
+        this.displayTablero();
         this.prepararHueco();
         this.prepararFichasMovibles();
     }
@@ -28,7 +29,7 @@ class game {
     generarFichas() {
         // Las fichas serán almacenadas en un array "fichas"
         const fichas = [];
-        for (let i = 0; i < 15; i++) {
+        for (let i = 1; i < 16; i++) {
             fichas.push(new ficha(i, this.idTabla));
         }
 
@@ -51,18 +52,12 @@ class game {
         // Seleccionar aleatoriamente que celda queda vacía:
         const celdaVacia = [(Math.floor(Math.random() * 4)), (Math.floor(Math.random() * 4))];
 
-        // Pone 4 fichas en cada array de tablero menos en 1 lugar
+        // Pone 4 fichas en cada array de tablero menos en 1 lugar que pone el hueco
         let fichasCreadas = 0;
         tablero.forEach((row, index) => {
             for(let col = 0; col <= 3; col++) {
                 if (index === celdaVacia[0] && col === celdaVacia[1]) {
-                    let element = document.createElement("td")
-                    let hueco = document.createElement("img");
-                    hueco.src = "img/blanco.gif";
-                    hueco.id = "hueco";
-                    element.appendChild(hueco);
-
-                    row[col] = hueco;
+                    row[col] = new ficha(0, this.idTabla).displayFicha();
                 } else {
                     row[col] = this.fichas[fichasCreadas].displayFicha();
                     fichasCreadas++
@@ -81,7 +76,7 @@ class game {
         let elementoTablero = document.createElement("table"); // Tabla
         elementoTablero.id = this.idTabla;
 
-        tablero.forEach(row => {
+        this.tablero.forEach(row => {
             let elementRow = document.createElement("tr"); // TR
 
             row.forEach(indiceDeRow => {
@@ -114,10 +109,7 @@ class game {
     prepararHueco() {
         this.hueco = document.getElementById("hueco");
 
-        this.hueco.addEventListener("dragover", this.handleDragOver);
-        this.hueco.addEventListener("dragenter", this.handleDragEnter);
-        this.hueco.addEventListener("dragleave", this.handleDragLeave);
-        this.hueco.addEventListener("drop", this.handleDrop);
+
 
         console.log("· Hueco preparado!");
     }
@@ -127,73 +119,20 @@ class game {
          listeners.
     */
     prepararFichasMovibles() {
-        this.fichas.forEach(ficha => { //Si está en contacto con el hueco:
-            if      (ficha.posY == this.coordYHueco & (ficha.posX + 1) == this.coordXHueco) {
-                ficha.element.classList += " draggable";
-            }
-            else if (ficha.posY == this.coordYHueco & (ficha.posX - 1) == this.coordXHueco) {
-                ficha.element.classList += " draggable";
-            }
-            else if (ficha.posX == this.coordXHueco & (ficha.posY + 1) == this.coordYHueco) {
-                ficha.element.classList += " draggable";
-            }
-            else if (ficha.posX == this.coordXHueco & (ficha.posY - 1) == this.coordYHueco) {
-                ficha.element.classList += " draggable";
-            }
-        });
-
-        let fichasMovibles = document.querySelectorAll("img.draggable"); 
-
-        fichasMovibles.forEach(function(ficha) {
-            ficha.addEventListener("dragstart", this.handleDragStart);
-            ficha.addEventListener("dragover", this.handleDragOver);
-            ficha.addEventListener("dragend", this.handleDragEnd);
-            ficha.addEventListener("dragenter", this.handleDragEnter);
-            ficha.addEventListener("dragleave", this.handleDragLeave);
-            ficha.addEventListener("drop", this.handleDrop);
-        });
+        console.log(this.tablero[0][0]);
+        this.tablero[0][0].setAttribute("draggable", "true")
+        this.tablero[0][0].addEventListener("dragstart", this.handleDrag)
     }
 
     /* --------------- FUNCIONES PARA DRAG --------------- */
-    handleDragStart(e) {
-        this.style.opacity = "0.4";
-    
-        dragSourceElement = this;
-    
-        e.dataTransfer.effectAllowed = "move";
-        e.dataTransfer.setData("img/html", this.src);
+    handleDrag(ev) {
+        console.log(this.outerHTML)
+        let copy = this.outerHTML;
+        document.appendChild(copy)
+        ev.dataTransfer.setData("element", this.innerHTML)
     }
-    
-    handleDragEnd(e) {
-        this.style.opacity = "1";
-    }
-    
-    handleDragOver(e) {
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
-    
-        return false
-    }
-    
-    handleDragEnter(e) {
-        this.classList.add('over');
-      }
-    
-    handleDragLeave(e) {
-        this.classList.remove('over');
-    }
-    
-    handleDrop(e) {
-        console.log("Handle Drop: " + this.innerHTML)
-        e.stopPropagation();
-    
-        if (dragSourceElement !== this) { // Intercambia los elementos
-            dragSourceElement.src = this.src;
-            this.src = e.dataTransfer.getData("img/html");
-        }
-    
-        this.classList.remove('over');
-        return false;
+
+    handleDrop(ev) {
+
     }
 }

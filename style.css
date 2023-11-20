@@ -40,6 +40,6 @@ img {
     width: 100px;
 }
 
-img#draggable {
-  cursor: move;
+[draggable] {
+  cursor:grab;
 }

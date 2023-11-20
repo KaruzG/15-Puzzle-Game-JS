@@ -9,23 +9,9 @@ class ficha {
      */
 
     constructor(valor, idTabla) {
-        this.valor = valor+1;
-        this.img = "./img/"+(valor+1)+".gif";
+        this.valor = valor;
+        this.img = "./img/"+(valor)+".gif";
         this.idTabla = idTabla;
-        this._posX = 0;
-        this._posY = 0;
-    }
-
-    // Get
-    get posX() {
-        let eTabla = document.getElementById("" + this.idTabla);
-
-        return this._posX;
-    }
-
-    // Set
-    set posX(x) {
-        this._posX = x;
     }
 
     // Methods
@@ -34,10 +20,20 @@ class ficha {
         ficha.id = "ficha" + (this.valor);
         ficha.classList += "ficha";
         ficha.src = this.img;
-        this._posX = x;
-        this._posY = y;
-        this.element = ficha;
+        this.posX = x;
+        this.posY = y;
 
         return ficha;
+    }
+
+    displayHueco(x, y) {
+        let hueco = document.createElement("img");
+        hueco.id = "hueco";
+        hueco.classList += "ficha";
+        hueco.src = this.img;
+        this.posX = x;
+        this.posY = y;
+
+        return hueco;
     }
 }
