@@ -91,18 +91,21 @@ class game {
     }
 
     /* BUSCARFICHA
-        Busca una ficha por sus coordenadas (sin uso por ahora)
+        Busca una ficha por sus coordenadas
     */
-    buscarFicha(x,y) {
-        fichas.forEach(ficha => {
-            if (ficha.coordX === x & ficha.coordY === y) {
-                return ficha;
-            } else {
-                return false;
-            }
+    buscarFichaPorId(id) {
+        let ubicacion = [];
 
-            
+        this.tablero.some((row, indiceRow) => {
+            row.some((element, indiceCol) => {
+                if (element.id === id) {
+                    ubicacion = [indiceRow, indiceCol]
+                    return true
+                }
+            });
         });
+
+        return ubicacion
     }
 
     prepararHueco() {
@@ -124,14 +127,36 @@ class game {
     }
 
     /* --------------- FUNCIONES PARA DRAG --------------- */
-    handleDrag(ev) {
-        ev.dataTransfer.setData("node", this.id)
+    handleDrag = ev => {
+        ev.dataTransfer.setData("id", ev.srcElement.id)
+        ev.dataTransfer.setData("src", ev.srcElement.src)
     }
 
-    handleDrop(ev) {
+    handleDrop = ev => {
         ev.preventDefault();
-        let data = ev.dataTransfer.getData("node");
-        console.log(data) // TE QUEDAS AQUí, Estás pasando el id para que desde esta función haga un appendChild(id) y cambie tmb tablero
+        let elementDraggedInId = ev.dataTransfer.getData("id");
+        let elementDraggedInSrc = ev.dataTransfer.getData("src");
+        
+        // Actualizar tablero (MODEL) WIP
+        let sourceElementPos = this.buscarFichaPorId(elementDraggedInId);
+        let targetElementPos = this.buscarFichaPorId(ev.srcElement.id);
+        console.log(sourceElementPos + " va a moverse a " + targetElementPos)
+
+        // Te quedas aquí, cambiando el modelo. luego hay que hacer bien prepararHueco y prepararFichasMovibles
+        [this.tablero[sourceElementPos[0]][sourceElementPos[1]], this.tablero[targetElementPos[0]][targetElementPos[1]] =  this.tablero[targetElementPos[0]][targetElementPos[1]], this.tablero[sourceElementPos[0]][sourceElementPos[1]]]
+
+
+        // Cambiar source por hueco
+        let sourceElement = document.getElementById(elementDraggedInId);      
+        sourceElement.id = ev.srcElement.id;
+        sourceElement.src = ev.srcElement.src;
+
+        // Cambiar hueco por la ficha:
+        ev.srcElement.id = elementDraggedInId;
+        ev.srcElement.src = elementDraggedInSrc;
+
+
+
     }
 
     handleDragover(ev) {
