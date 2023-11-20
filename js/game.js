@@ -16,7 +16,6 @@ class game {
 
     start() {
         this.tablero = this.generarTablero()
-
         this.displayTablero();
         this.prepararHueco();
         this.prepararFichasMovibles();
@@ -72,7 +71,7 @@ class game {
     /* DISPLAYTABLERO
        · Genera el elemento HTML a mostrar en la página.
     */
-    displayTablero(tablero) {
+    displayTablero() {
         let elementoTablero = document.createElement("table"); // Tabla
         elementoTablero.id = this.idTabla;
 
@@ -107,9 +106,10 @@ class game {
     }
 
     prepararHueco() {
-        this.hueco = document.getElementById("hueco");
+        this.hueco = document.getElementById("ficha0");
 
-
+        document.getElementById("ficha0").addEventListener("dragover", this.handleDragover)
+        document.getElementById("ficha0").addEventListener("drop", this.handleDrop)
 
         console.log("· Hueco preparado!");
     }
@@ -119,20 +119,22 @@ class game {
          listeners.
     */
     prepararFichasMovibles() {
-        console.log(this.tablero[0][0]);
         this.tablero[0][0].setAttribute("draggable", "true")
         this.tablero[0][0].addEventListener("dragstart", this.handleDrag)
     }
 
     /* --------------- FUNCIONES PARA DRAG --------------- */
     handleDrag(ev) {
-        console.log(this.outerHTML)
-        let copy = this.outerHTML;
-        document.appendChild(copy)
-        ev.dataTransfer.setData("element", this.innerHTML)
+        ev.dataTransfer.setData("node", this.id)
     }
 
     handleDrop(ev) {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("node");
+        console.log(data) // TE QUEDAS AQUí, Estás pasando el id para que desde esta función haga un appendChild(id) y cambie tmb tablero
+    }
 
+    handleDragover(ev) {
+        ev.preventDefault();
     }
 }
