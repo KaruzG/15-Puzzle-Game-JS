@@ -74,6 +74,7 @@ class game {
        · Genera el elemento HTML a mostrar en la página.
     */
     displayTablero() {
+        // TABLERO
         let elementoTablero = document.createElement("table"); // Tabla
         elementoTablero.id = this.idTabla;
 
@@ -90,6 +91,13 @@ class game {
         });
 
         body.appendChild(elementoTablero);
+
+        // BOTONES
+        let botonSolucionar = document.createElement("button");
+        botonSolucionar.innerHTML = "SOLUCIÓN";
+        botonSolucionar.addEventListener("click", this.solucionar)
+
+        body.appendChild(botonSolucionar);
     }
 
     prepararHueco() {
@@ -145,6 +153,41 @@ class game {
     }
 
     /* --------------------- UTILS ------------------------ */
+    /* SOLUCIONAR */
+    solucionar = ev => {
+        let tabla = document.getElementById(this.idTabla);
+        let imgS = tabla.querySelectorAll("img")
+
+        for (let valor = 1; valor <= 15; valor++) {
+            console.log(valor)
+            imgS[valor-1].src = "./img/" + valor + ".gif";
+        }
+
+        imgS[15].src = "./img/0.gif";
+
+        this.tiempoGastado()
+    }
+
+    /* COMPROBAR */
+    comprobar() {
+        // Orden que se tiene que dar para ganar (del 1 al 15 y un 0)
+        let orden = []
+        for(let i = 1; i <= 15; i++) {
+            orden.push("ficha" + i)
+        }
+        orden.push("ficha0");
+
+        // Comprobar
+        this.tablero.forEach((row, indexRow) => {
+            row.forEach((ficha, indiceFicha) => {
+                let valorCorrecto = ((row * 4) + indiceFicha+1)
+                if(ficha.id != orden[valorCorrecto]) {
+                    // Estás aquí, hay que validar el tablero
+                }
+            })
+        })
+    }
+
     /* BUSCARFICHA
         Busca una ficha por sus coordenadas
     */
@@ -161,6 +204,19 @@ class game {
             });
     
             return ubicacion
+    }
+
+    /* TIEMPOGASTADO */
+    tiempoGastado() {
+        let mil = new Date - this.startTime;
+        alert("Has tardado " + Math.floor(mil / 1000) + " segundos!");
+    }
+
+    /* SLEEP
+        · Se gasta para cuando se resuelve el puzle no sea instantaneo si no una "animación"
+    */
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     /* --------------- FUNCIONES PARA DRAG ---------------- */
