@@ -1,14 +1,15 @@
 var body = document.querySelector("body");
 
-/** Variables
-     * @param {Number} idTabla id de la tabla
-     * @param {Array} fichas Fichas dentro de la tabla (objetos)
-     * 
-     * @param {Number} celdaVaciaX Posición X del hueco
-     * @param {Number} celdaVaciaY Posición Y del hueco
-*/
-
 class game {
+    
+    /** Variables
+         * @param {Number} idTabla id de la tabla
+         * @param {Array} fichas Fichas dentro de la tabla (objetos)
+         * 
+         * @param {Number} celdaVaciaX Posición X del hueco
+         * @param {Number} celdaVaciaY Posición Y del hueco
+    */
+
     constructor() {
         this.idTabla = (Math.floor(Math.random() * 100));
         this.fichas = this.generarFichas();
@@ -111,6 +112,14 @@ class game {
     prepararHueco() {
         this.hueco = document.getElementById("ficha0");
 
+        // Limpiar todos los event listeners
+        this.tablero.forEach(row => {
+            row.forEach(cell => {
+                cell.removeEventListener("dragover", this.handleDragover)
+                cell.removeEventListener("drop", this.handleDrop)
+            })
+        });
+
         document.getElementById("ficha0").addEventListener("dragover", this.handleDragover)
         document.getElementById("ficha0").addEventListener("drop", this.handleDrop)
 
@@ -122,8 +131,34 @@ class game {
          listeners.
     */
     prepararFichasMovibles() {
-        this.tablero[0][0].setAttribute("draggable", "true")
-        this.tablero[0][0].addEventListener("dragstart", this.handleDrag)
+        // Limpiar todos los event listeners
+        this.tablero.forEach(row => {
+            row.forEach(cell => {
+                cell.removeEventListener("dragstart", this.handleDrag);
+                cell.removeAttribute("draggable")
+            })
+        });
+
+        // Preparar fichas adyacentes
+        let posHueco = this.buscarFichaPorId("ficha0");
+
+        if (posHueco[0] != 0) {
+            this.tablero[(posHueco[0])-1][(posHueco[1])].setAttribute("draggable", "true");
+            this.tablero[(posHueco[0])-1][(posHueco[1])].addEventListener("dragstart", this.handleDrag);
+        }
+        if (posHueco[0] != 3) {
+            this.tablero[(posHueco[0])+1][(posHueco[1])].setAttribute("draggable", "true");
+            this.tablero[(posHueco[0])+1][(posHueco[1])].addEventListener("dragstart", this.handleDrag);
+        }
+        if (posHueco[1] != 0) {
+            this.tablero[(posHueco[0])][(posHueco[1])-1].setAttribute("draggable", "true");
+            this.tablero[(posHueco[0])][(posHueco[1])-1].addEventListener("dragstart", this.handleDrag);
+        }
+        if (posHueco[1] != 3) {
+            this.tablero[(posHueco[0])][(posHueco[1])+1].setAttribute("draggable", "true");
+            this.tablero[(posHueco[0])][(posHueco[1])+1].addEventListener("dragstart", this.handleDrag);
+        }
+
     }
 
     /* --------------- FUNCIONES PARA DRAG --------------- */
@@ -136,15 +171,6 @@ class game {
         ev.preventDefault();
         let elementDraggedInId = ev.dataTransfer.getData("id");
         let elementDraggedInSrc = ev.dataTransfer.getData("src");
-        
-        // Actualizar tablero (MODEL) WIP
-        let sourceElementPos = this.buscarFichaPorId(elementDraggedInId);
-        let targetElementPos = this.buscarFichaPorId(ev.srcElement.id);
-        console.log(sourceElementPos + " va a moverse a " + targetElementPos)
-
-        // Te quedas aquí, cambiando el modelo. luego hay que hacer bien prepararHueco y prepararFichasMovibles
-        [this.tablero[sourceElementPos[0]][sourceElementPos[1]], this.tablero[targetElementPos[0]][targetElementPos[1]] =  this.tablero[targetElementPos[0]][targetElementPos[1]], this.tablero[sourceElementPos[0]][sourceElementPos[1]]]
-
 
         // Cambiar source por hueco
         let sourceElement = document.getElementById(elementDraggedInId);      
@@ -155,7 +181,9 @@ class game {
         ev.srcElement.id = elementDraggedInId;
         ev.srcElement.src = elementDraggedInSrc;
 
-
+        // Actualizar tablero
+        this.prepararHueco();
+        this.prepararFichasMovibles();
 
     }
 
