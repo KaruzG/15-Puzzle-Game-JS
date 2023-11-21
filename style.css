@@ -58,6 +58,18 @@ button {
 
 button:hover {
     transform: scale(1.2);
-    transition: 0.2s;
     cursor: pointer;
+    transition: 0.2s;
+
+}
+
+img.over {
+    border: 3px dotted green;
+    filter: brightness(0.9);
+}
+
+img.dragging {
+    opacity: 0.2;
+    transform: scale(0.8);
+    transition: 1.5s;
 }

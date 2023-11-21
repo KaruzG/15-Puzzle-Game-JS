@@ -112,9 +112,8 @@ class game {
         });
 
         document.getElementById("ficha0").addEventListener("dragover", this.handleDragover)
+        document.getElementById("ficha0").addEventListener("dragleave", this.handleDragLeave)
         document.getElementById("ficha0").addEventListener("drop", this.handleDrop)
-
-        console.log("· Hueco preparado!");
     }
 
     /*  PREPARARFICHAMOVIBLES
@@ -136,18 +135,22 @@ class game {
         if (posHueco[0] != 0) {
             this.tablero[(posHueco[0])-1][(posHueco[1])].setAttribute("draggable", "true");
             this.tablero[(posHueco[0])-1][(posHueco[1])].addEventListener("dragstart", this.handleDrag);
+            this.tablero[(posHueco[0])-1][(posHueco[1])].addEventListener("dragend", this.handleDragEnd);
         }
         if (posHueco[0] != 3) {
             this.tablero[(posHueco[0])+1][(posHueco[1])].setAttribute("draggable", "true");
             this.tablero[(posHueco[0])+1][(posHueco[1])].addEventListener("dragstart", this.handleDrag);
+            this.tablero[(posHueco[0])+1][(posHueco[1])].addEventListener("dragend", this.handleDragEnd);
         }
         if (posHueco[1] != 0) {
             this.tablero[(posHueco[0])][(posHueco[1])-1].setAttribute("draggable", "true");
             this.tablero[(posHueco[0])][(posHueco[1])-1].addEventListener("dragstart", this.handleDrag);
+            this.tablero[(posHueco[0])][(posHueco[1])-1].addEventListener("dragend", this.handleDragEnd);
         }
         if (posHueco[1] != 3) {
             this.tablero[(posHueco[0])][(posHueco[1])+1].setAttribute("draggable", "true");
             this.tablero[(posHueco[0])][(posHueco[1])+1].addEventListener("dragstart", this.handleDrag);
+            this.tablero[(posHueco[0])][(posHueco[1])+1].addEventListener("dragend", this.handleDragEnd);
         }
 
     }
@@ -212,17 +215,12 @@ class game {
         alert("Has tardado " + Math.floor(mil / 1000) + " segundos!");
     }
 
-    /* SLEEP
-        · Se gasta para cuando se resuelve el puzle no sea instantaneo si no una "animación"
-    */
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     /* --------------- FUNCIONES PARA DRAG ---------------- */
     handleDrag = ev => {
         ev.dataTransfer.setData("id", ev.srcElement.id)
         ev.dataTransfer.setData("src", ev.srcElement.src)
+        ev.srcElement.classList.add("dragging");
+
     }
 
     handleDrop = ev => {
@@ -243,9 +241,28 @@ class game {
         this.prepararHueco();
         this.prepararFichasMovibles();
 
+        document.getElementById("ficha0").classList.remove("over");
+
+
     }
 
-    handleDragover(ev) {
+    // Visuales
+    handleDragover = ev => {
         ev.preventDefault();
+        ev.srcElement.classList.add("over");
+    }
+
+    handleDragEnd = ev => {
+        ev.preventDefault();
+        ev.srcElement.classList.remove("dragging");
+        // Un poco bestia lo de abajo pero me sirve por ahora
+        document.querySelectorAll("img").forEach(element => {
+            element.classList.remove("over")
+        });
+    }
+
+    handleDragLeave = ev => {
+        ev.preventDefault();
+        ev.srcElement.classList.remove("over");
     }
 }
