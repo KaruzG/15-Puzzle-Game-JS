@@ -1,11 +1,10 @@
 var body = document.querySelector("body");
 
 class game {
-    
-    /** Variables
+
+    /**
          * @param {Number} idTabla id de la tabla
          * @param {Array} fichas Fichas dentro de la tabla (objetos)
-         * 
          * @param {Number} celdaVaciaX Posición X del hueco
          * @param {Number} celdaVaciaY Posición Y del hueco
     */
@@ -15,13 +14,15 @@ class game {
         this.fichas = this.generarFichas();
     }
 
+    /* ------ GENERACIÓN DE TABLERO Y CONTROL DEL MODELO ------ */
     start() {
+        this.startTime = new Date();
+
         this.tablero = this.generarTablero()
         this.displayTablero();
         this.prepararHueco();
         this.prepararFichasMovibles();
     }
-
 
     /* GENERARFICHAS
        · Genera 15 objetos de ficha en orden aleatorio de valor sin repetir
@@ -91,24 +92,6 @@ class game {
         body.appendChild(elementoTablero);
     }
 
-    /* BUSCARFICHA
-        Busca una ficha por sus coordenadas
-    */
-    buscarFichaPorId(id) {
-        let ubicacion = [];
-
-        this.tablero.some((row, indiceRow) => {
-            row.some((element, indiceCol) => {
-                if (element.id === id) {
-                    ubicacion = [indiceRow, indiceCol]
-                    return true
-                }
-            });
-        });
-
-        return ubicacion
-    }
-
     prepararHueco() {
         this.hueco = document.getElementById("ficha0");
 
@@ -161,7 +144,26 @@ class game {
 
     }
 
-    /* --------------- FUNCIONES PARA DRAG --------------- */
+    /* --------------------- UTILS ------------------------ */
+    /* BUSCARFICHA
+        Busca una ficha por sus coordenadas
+    */
+    buscarFichaPorId(id) {
+            let ubicacion = [];
+    
+            this.tablero.some((row, indiceRow) => {
+                row.some((element, indiceCol) => {
+                    if (element.id === id) {
+                        ubicacion = [indiceRow, indiceCol]
+                        return true
+                    }
+                });
+            });
+    
+            return ubicacion
+    }
+
+    /* --------------- FUNCIONES PARA DRAG ---------------- */
     handleDrag = ev => {
         ev.dataTransfer.setData("id", ev.srcElement.id)
         ev.dataTransfer.setData("src", ev.srcElement.src)
