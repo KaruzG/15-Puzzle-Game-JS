@@ -248,9 +248,10 @@ class game {
         this.prepararHueco();
         this.prepararFichasMovibles();
 
+        // Comprobar si se ha ganado
+        this.comprobar()
+        
         document.getElementById("ficha0").classList.remove("over");
-
-
     }
 
     // Visuales
