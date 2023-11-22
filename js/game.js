@@ -171,7 +171,9 @@ class game {
         this.tiempoGastado()
     }
 
-    /* COMPROBAR */
+    /* COMPROBAR 
+    Comprueba si las fichas están en el orden correcto. No es óptimo que aunque encuentre 1 error siga el loop pero no me queda mucho tiempo ;)
+    */
     comprobar() {
         // Orden que se tiene que dar para ganar (del 1 al 15 y un 0)
         let orden = []
@@ -181,14 +183,18 @@ class game {
         orden.push("ficha0");
 
         // Comprobar
-        this.tablero.forEach((row, indexRow) => {
-            row.forEach((ficha, indiceFicha) => {
-                let valorCorrecto = ((row * 4) + indiceFicha+1)
-                if(ficha.id != orden[valorCorrecto]) {
-                    // Estás aquí, hay que validar el tablero
-                }
+
+        let correcto = true;
+        this.tablero.forEach(function(row, indexRow) {
+            row.forEach(function(ficha, indiceFicha) {
+                let valorCorrecto = ((indexRow * 4) + indiceFicha)
+                
+                if(ficha.id !== orden[valorCorrecto]) { correcto = false }
             })
         })
+
+        return correcto
+
     }
 
     /* BUSCARFICHA
