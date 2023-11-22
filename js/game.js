@@ -65,7 +65,6 @@ class game {
                 }
             }
         });
-        console.log(tablero);
 
         return tablero
     }
@@ -162,7 +161,6 @@ class game {
         let imgS = tabla.querySelectorAll("img")
 
         for (let valor = 1; valor <= 15; valor++) {
-            console.log(valor)
             imgS[valor-1].src = "./img/" + valor + ".gif";
         }
 
@@ -188,13 +186,16 @@ class game {
         this.tablero.forEach(function(row, indexRow) {
             row.forEach(function(ficha, indiceFicha) {
                 let valorCorrecto = ((indexRow * 4) + indiceFicha)
-                
+
                 if(ficha.id !== orden[valorCorrecto]) { correcto = false }
             })
         })
 
-        return correcto
+        if (correcto) {
+            this.tiempoGastado();
+        }
 
+        return correcto
     }
 
     /* BUSCARFICHA
