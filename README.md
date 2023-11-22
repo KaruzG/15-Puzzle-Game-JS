@@ -5,7 +5,7 @@ This repository contains the code for a classic **15 Puzzle Game**, implemented 
 
 ## Demo
 
-[Link to the live demo of the 15 Puzzle Game](https://karuzg.github.io/Puzzle4x4/)
+[Link to the live demo of the 15 Puzzle Game](https://karuzg.github.io/15-Puzzle-Game-JS/)
 
 ## Features
 
